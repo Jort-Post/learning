@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <vector>
+#include <list>
 
 using std::string;
 
@@ -37,22 +37,80 @@ class Person {
 
 class ContentManager {
     public:
-        void AddContact(const Person& person) {
-            people.push_back(person);
+        void AddContact(const string& name, const string& phone, const string& mail) {
+            Person newContact(name,phone,mail);
+            people.push_back(newContact);
         };
 
-        void RemoveContact(const Person& person) {
-            people.erase()
+        void RemoveContact(const string& name) {
+            for (Person i : people) {
+                if (i.getName() == name) {
+                    people.remove(i);
+                }
+            }
+            
         };
+
+        void ViewContact(const string& name) {
+            for (Person i : people) {
+                if (i.getName() == name) {
+                    i.toString();
+                }
+            }
+        };
+
+        void ListContacts() {
+            for (Person i : people) {
+                i.toString();
+            }
+        };
+
+        // FUNCTION OVERLOADING: SAME FUNCTION BUT TWO DIFFERENT DEFINITIONS BASED ON THE INPUT
+        void SearchContact(const string& name) {
+            for (Person i : people) {
+                if (i.getName() == name ) {i.toString();}
+            }
+        };
+
+        void SearchContact(const string& mail) {
+            for (Person i : people) {
+                if (i.getMail() == mail ) {i.toString();}
+            }
+        };
+
 
         
     private:
-        std::vector<Person> people;
+        std::list<Person> people;
     
 };
 
 int main() {
-    Person person("Jort","123456789","jort.post@icloud.com");
+    
+    int choice;
+    bool program = true;
+
+    while (program) {
+        std::cout << "What do you want to do?\n"
+                     "[1] Add a contact\n"
+                     "[2] Remove a contact\n"
+                     "[3] View a contact\n"
+                     "[4] View all contacts\n"
+                     "[5] Search a contact\n"
+                     "[6] Exit\n" << std::endl;
+        
+        std::cin >> choice;
+
+        switch(choice) {
+            case 1:
+                const string phone, mail, name;
+
+                std::cout << "Enter a name, a phonenumber and an email\n" << std::endl;
+                std::cin >> name >> phone >> mail >> std::endl;
+
+                ContentManager.AddContact(name,phone,mail)
+        }
+    }
 
 
     
