@@ -35,21 +35,42 @@ class Person {
     
 };
 
-class ContentManager {
+class ContactManager {
     public:
         void AddContact(const string& name, const string& phone, const string& mail) {
             Person newContact(name,phone,mail);
             people.push_back(newContact);
         };
 
-        void RemoveContact(const string& name) {
-            for (Person i : people) {
-                if (i.getName() == name) {
-                    people.remove(i);
-                }
-            }
+        // MY ORIGINAL SOLUTION TO "REMOVE CONTACTS":
+        // void RemoveContact(const string& name) {
+        //     for (Person i : people) {
+        //         if (i.getName() == name) {
+        //             people.remove(i);
+        //         }
+        //     }
             
-        };
+        // };
+
+        // WHY THIS DOESN'T WORK:
+        // • for (Person i : people) { } loops over actual values. 
+        //   This means that each value of i is actually an copy of elements from the list.
+        // • Why it doesn't compile: I try to use the comparison operator
+        //   whilst I did not define one.
+
+        void RemoveContact(const string& name) {
+            people.erase(std::remove_if(people.begin(), people.end(), [&name](const Person& c) 
+                { return c.getName() == name; }),people.end());
+        }
+        // The optimal solution is the 'erase-remove idiom' which uses two functions:
+        // .erase(begin,end) -> this function actually erases values from a list, but on it's own
+        // it could leave gaps in the middle of such list, therefore it's combined with:
+        // std::remove(begin, end, value) -> moves all values equal to the value to the END of the list.
+        // Or used in this case:
+        // std::remove(begin, end, unary predicate) -> moves all values which satisfy the predicate to the END of the list
+        // The predicate takes a lambda expression in the form: [capture](parameters) -> return_type { body }
+        // Capture: a list which specifies which variables are available to use in the expression, in this example it is the name variable to compare it to the object attribute name.
+        // parameters: a list of parameters with a type 
 
         void ViewContact(const string& name) {
             for (Person i : people) {
@@ -89,6 +110,8 @@ int main() {
     
     int choice;
     bool program = true;
+    ContactManager contactmanager;
+    string phone, mail, name;
 
     while (program) {
         std::cout << "What do you want to do?\n"
@@ -103,16 +126,34 @@ int main() {
 
         switch(choice) {
             case 1:
-                const string phone, mail, name;
-
                 std::cout << "Enter a name, a phonenumber and an email\n" << std::endl;
-                std::cin >> name >> phone >> mail >> std::endl;
-
-                ContentManager.AddContact(name,phone,mail)
+                std::cin >> name >> phone >> mail;
+                contactmanager.AddContact(name,phone,mail);
+                break;
+            case 2:
+                std::cout << "Enter the name of the contact you'd like to remove\n" << std::endl;
+                std::cin >> name;
+                contactmanager.RemoveContact(name);
+                break;
+            case 3:
+                std::cout << "Enter the name of the person you'd like to get details of\n" << std::endl;
+                std::cin >> name;
+                contactmanager.SearchContact(name);
+                break;
+            case 4:
+                contactmanager.ListContacts();
+                break;
+            case 5:
+                std::cout << "Enter the name of the person OR their email";
+                std::cin >> name;
+                contactmanager.SearchContact(name);
+            case 6:
+                program = false;
+                break;
         }
     }
 
 
-    
+    return 0;
 }
 
