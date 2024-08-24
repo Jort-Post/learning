@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <vector>
+#include <algorithm>
 
 using std::string;
 
@@ -24,7 +26,7 @@ class Person {
     string getMail() const {return mail;}
 
     void toString() {
-        std::cout << 'Name:' << name << '\nPhone' << phone << '\nmail' << std::endl;
+        std::cout << 'Name:' << name << '\nPhone:' << phone << '\nMail:' << std::endl;
     }
 
     private:
@@ -59,9 +61,14 @@ class ContactManager {
         //   whilst I did not define one.
 
         void RemoveContact(const string& name) {
-            people.erase(std::remove_if(people.begin(), people.end(), [&name](const Person& c) 
-                { return c.getName() == name; }),people.end());
-        }
+            people.erase(
+                std::remove_if(people.begin(), people.end(),
+                [&name](const Person& c){
+                    return c.getName() == name;
+                }),
+                people.end()
+            );
+        };
         // The optimal solution is the 'erase-remove idiom' which uses two functions:
         // .erase(begin,end) -> this function actually erases values from a list, but on it's own
         // it could leave gaps in the middle of such list, therefore it's combined with:
@@ -81,7 +88,7 @@ class ContactManager {
         };
 
         void ListContacts() {
-            for (Person i : people) {
+            for (Person& i : people) {
                 i.toString();
             }
         };
@@ -93,16 +100,10 @@ class ContactManager {
             }
         };
 
-        void SearchContact(const string& mail) {
-            for (Person i : people) {
-                if (i.getMail() == mail ) {i.toString();}
-            }
-        };
-
 
         
     private:
-        std::list<Person> people;
+        std::vector<Person> people;
     
 };
 
@@ -126,9 +127,14 @@ int main() {
 
         switch(choice) {
             case 1:
-                std::cout << "Enter a name, a phonenumber and an email\n" << std::endl;
-                std::cin >> name >> phone >> mail;
+                std::cout << "Enter a name\n" << std::endl;
+                std::cin >> name; 
+                std::cout << "Enter a phone number\n" << std::endl;
+                std::cin >> phone;
+                std::cout << "Enter an email\n" << std::endl;
+                std::cin >> mail;
                 contactmanager.AddContact(name,phone,mail);
+                
                 break;
             case 2:
                 std::cout << "Enter the name of the contact you'd like to remove\n" << std::endl;
@@ -144,7 +150,7 @@ int main() {
                 contactmanager.ListContacts();
                 break;
             case 5:
-                std::cout << "Enter the name of the person OR their email";
+                std::cout << "Enter the name of the person";
                 std::cin >> name;
                 contactmanager.SearchContact(name);
             case 6:
