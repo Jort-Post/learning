@@ -26,7 +26,7 @@ class Person {
     string getMail() const {return mail;}
 
     void toString() {
-        std::cout << 'Name:' << name << '\nPhone:' << phone << '\nMail:' << std::endl;
+        std::cout << "\nName: " << name << "\nPhone: " << phone << "\nMail: " << mail << std::endl;
     }
 
     private:
@@ -88,7 +88,7 @@ class ContactManager {
         };
 
         void ListContacts() {
-            for (Person& i : people) {
+            for (Person i : people) {
                 i.toString();
             }
         };
