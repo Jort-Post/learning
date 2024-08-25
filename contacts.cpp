@@ -153,6 +153,7 @@ int main() {
                 std::cout << "Enter the name of the person";
                 std::cin >> name;
                 contactmanager.SearchContact(name);
+                break;
             case 6:
                 program = false;
                 break;
