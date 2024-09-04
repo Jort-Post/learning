@@ -14,7 +14,18 @@ class Perceptron {
 
     };
 
-    void normal()
+    int dot_product(std::vector<int>& X) {
+        int result = 0;
+
+        if (X.size() != weights.size()) {
+            puts("Error: arrays not of equal size");
+            return -1;
+        }
+        for (int i, i < X.length(),i++){
+            result += X[i] * weights[i]; 
+             }
+        return result        
+    };
 
     private:
         int learning_rate;  
