@@ -8,33 +8,34 @@
 class Perceptron {
     public:
     
-    Perceptron(const int& learning_rate, int& bias, const int& i) : learning_rate(learning_rate), bias(bias), i(i) {}
+    Perceptron(const double& learning_rate, double& bias, const int& i) : learning_rate(learning_rate), bias(bias), i(i) {}
 			
-    Perceptron& fit(std::vector<int>& X, std::vector<int>& y) {
+    Perceptron& fit(std::vector<double>& X, std::vector<double>& y) {
 
     };
 
-    int dot_product(std::vector<int>& X) {
-        int result = 0;
-
-        if (X.size() != weights.size()) {
-            puts("Error: arrays not of equal size");
-            return -1;
-        }
-        for (int i, i < X.length(),i++){
-            result += X[i] * weights[i]; 
-             }
-        return result        
-    };
+      
 
     private:
-        int learning_rate;  
-        int bias;
+        double learning_rate;  
+        double bias;
 	int i;
 	int random_state;
-        std::vector<int> weights;
-	std::vector<int> errors;
- 
+        std::vector<double> weights; 
+	std::vector<double> errors;
+        
+        double& dot_product(std::vector<int>& X) {
+            double result = 0.0;
 
-
+            if (X.size() != weights.size()) {
+                puts("Error: arrays not of equal size");
+                return -1;
+            }
+            for (int i, i < X.length(),i++){
+                result += X[i] * weights[i]; 
+                }
+            return result        
+        }; 
+        
+        int
 };
